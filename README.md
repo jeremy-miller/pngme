@@ -1,2 +1,3 @@
-# pngme
-Code for the "PNGme" book
+# PNGme
+
+Code for the [PNGme](https://jrdngr.github.io/pngme_book/) book.
