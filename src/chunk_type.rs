@@ -5,32 +5,32 @@ use std::{
 };
 
 #[derive(Debug, Eq, PartialEq)]
-pub struct ChunkType {
+struct ChunkType {
     bytes: [u8; 4],
 }
 
 impl ChunkType {
-    pub fn bytes(&self) -> [u8; 4] {
+    fn bytes(&self) -> [u8; 4] {
         self.bytes
     }
 
-    pub fn is_valid(&self) -> bool {
+    fn is_valid(&self) -> bool {
         self.is_reserved_bit_valid() && self.bytes.iter().all(|&x| x.is_ascii_alphabetic())
     }
 
-    pub fn is_critical(&self) -> bool {
+    fn is_critical(&self) -> bool {
         self.bytes[0].is_ascii_uppercase()
     }
 
-    pub fn is_public(&self) -> bool {
+    fn is_public(&self) -> bool {
         self.bytes[1].is_ascii_uppercase()
     }
 
-    pub fn is_reserved_bit_valid(&self) -> bool {
+    fn is_reserved_bit_valid(&self) -> bool {
         self.bytes[2].is_ascii_uppercase()
     }
 
-    pub fn is_safe_to_copy(&self) -> bool {
+    fn is_safe_to_copy(&self) -> bool {
         self.bytes[3].is_ascii_lowercase()
     }
 }
