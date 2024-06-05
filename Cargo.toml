@@ -1,0 +1,12 @@
+[package]
+name = "pngme"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+color-eyre = "0.6.3"
+tracing = "0.1.40"
+tracing-subscriber = "0.3.18"
+
+[profile.dev.package.backtrace] # for color-eyre
+opt-level = 3
