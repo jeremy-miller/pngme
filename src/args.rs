@@ -9,8 +9,6 @@ pub struct App {
     pub command: Commands,
 }
 
-// TODO switch to positional arguments
-
 #[derive(Subcommand, Debug)]
 pub enum Commands {
     /// Encode a message into a PNG file
