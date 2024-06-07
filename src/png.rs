@@ -75,7 +75,7 @@ impl TryFrom<&[u8]> for Png {
                 .try_into()
                 .map_err(|_| eyre!("Invalid chunk length"))?;
             let length = u32::from_be_bytes(length) as usize;
-            let chunk_length = (CHUNK_LENGTH_SIZE + CHUNK_TYPE_SIZE + length + CHUNK_CRC_SIZE);
+            let chunk_length = CHUNK_LENGTH_SIZE + CHUNK_TYPE_SIZE + length + CHUNK_CRC_SIZE;
             let (chunk_data, rest) = remaining_data.split_at(chunk_length);
             let chunk = Chunk::try_from(chunk_data)?;
             chunks.push(chunk);
