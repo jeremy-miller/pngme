@@ -9,6 +9,8 @@ pub struct App {
     pub command: Commands,
 }
 
+// TODO switch to positional arguments
+
 #[derive(Subcommand, Debug)]
 pub enum Commands {
     /// Encode a message into a PNG file
@@ -27,47 +29,38 @@ pub enum Commands {
 #[derive(Args, Debug)]
 pub struct EncodeArgs {
     /// Path to input PNG file
-    #[arg(short, long)]
     file_path: PathBuf,
 
     /// Chunk type of message
-    #[arg(short, long)]
     chunk_type: String,
 
     /// Message to encode
-    #[arg(short, long)]
     message: String,
 
     /// Optional path to output PNG file
-    #[arg(short, long)]
     output_file_path: Option<PathBuf>,
 }
 
 #[derive(Args, Debug)]
 pub struct DecodeArgs {
     /// Path to input PNG file
-    #[arg(short, long)]
     file_path: PathBuf,
 
     /// Chunk type of message
-    #[arg(short, long)]
     chunk_type: String,
 }
 
 #[derive(Args, Debug)]
 pub struct RemoveArgs {
     /// Path to input PNG file
-    #[arg(short, long)]
     file_path: PathBuf,
 
     /// Chunk type of message
-    #[arg(short, long)]
     chunk_type: String,
 }
 
 #[derive(Args, Debug)]
 pub struct PrintArgs {
     /// Path to input PNG file
-    #[arg(short, long)]
     file_path: PathBuf,
 }
