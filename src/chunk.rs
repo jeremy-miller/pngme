@@ -2,11 +2,11 @@ use crate::chunk_type::ChunkType;
 use color_eyre::eyre::{self, eyre, Result};
 use std::fmt::{Display, Formatter};
 
-const CHUNK_LENGTH_SIZE: usize = 4;
-const CHUNK_TYPE_SIZE: usize = 4;
-const CHUNK_CRC_SIZE: usize = 4;
+pub const CHUNK_LENGTH_SIZE: usize = 4;
+pub const CHUNK_TYPE_SIZE: usize = 4;
+pub const CHUNK_CRC_SIZE: usize = 4;
 
-struct Chunk {
+pub struct Chunk {
     length: u32,
     chunk_type: ChunkType,
     data: Vec<u8>,
@@ -14,7 +14,7 @@ struct Chunk {
 }
 
 impl Chunk {
-    fn new(chunk_type: ChunkType, data: Vec<u8>) -> Chunk {
+    pub fn new(chunk_type: ChunkType, data: Vec<u8>) -> Chunk {
         let length = data.len() as u32;
         let crc = calculate_crc(&chunk_type, &data);
 
@@ -30,7 +30,7 @@ impl Chunk {
         self.length
     }
 
-    fn chunk_type(&self) -> &ChunkType {
+    pub fn chunk_type(&self) -> &ChunkType {
         &self.chunk_type
     }
 
@@ -42,11 +42,11 @@ impl Chunk {
         self.crc
     }
 
-    fn data_as_string(&self) -> Result<String> {
+    pub fn data_as_string(&self) -> Result<String> {
         String::from_utf8(self.data.clone()).map_err(|_| eyre!("Invalid UTF-8 bytes"))
     }
 
-    fn as_bytes(&self) -> Vec<u8> {
+    pub fn as_bytes(&self) -> Vec<u8> {
         self.length
             .to_be_bytes()
             .iter()
