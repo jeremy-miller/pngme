@@ -1,2 +1,0 @@
-[env]
-RUST_LIB_BACKTRACE = "full" # for color-eyre

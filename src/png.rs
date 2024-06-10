@@ -1,32 +1,33 @@
 use crate::chunk::{Chunk, CHUNK_CRC_SIZE, CHUNK_LENGTH_SIZE, CHUNK_TYPE_SIZE};
-use color_eyre::eyre::{self, eyre, Result};
-use std::{fmt::Display, fmt::Formatter};
+use color_eyre::eyre;
+use color_eyre::eyre::eyre;
+use std::fmt::{Display, Formatter};
 
 const HEADER_LENGTH: usize = 8;
 
-struct Png {
+pub struct Png {
     chunks: Vec<Chunk>,
 }
 
 impl Png {
     pub const STANDARD_HEADER: [u8; 8] = [137, 80, 78, 71, 13, 10, 26, 10];
 
-    fn from_chunks(chunks: Vec<Chunk>) -> Png {
+    pub fn from_chunks(chunks: Vec<Chunk>) -> Png {
         Png { chunks }
     }
 
-    fn append_chunk(&mut self, chunk: Chunk) {
+    pub fn append_chunk(&mut self, chunk: Chunk) {
         self.chunks.push(chunk);
     }
 
-    fn remove_chunk(&mut self, chunk_type: &str) -> Result<Chunk> {
+    pub fn remove_chunk(&mut self, chunk_type: &str) -> eyre::Result<Chunk> {
         let index = self
             .chunks
             .iter()
             .position(|c| c.chunk_type().to_string() == chunk_type);
         match index {
             Some(index) => Ok(self.chunks.remove(index)),
-            None => Err(eyre!("Chunk not found")),
+            None => Err(eyre!("Chunk type {} not found", chunk_type)),
         }
     }
 
@@ -38,7 +39,7 @@ impl Png {
         self.chunks.as_slice()
     }
 
-    fn chunk_by_type(&self, chunk_type: &str) -> Option<&Chunk> {
+    pub fn chunk_by_type(&self, chunk_type: &str) -> Option<&Chunk> {
         self.chunks
             .iter()
             .find(|&c| c.chunk_type().to_string() == chunk_type)
@@ -57,7 +58,7 @@ impl Png {
 impl TryFrom<&[u8]> for Png {
     type Error = eyre::Report;
 
-    fn try_from(value: &[u8]) -> Result<Self, Self::Error> {
+    fn try_from(value: &[u8]) -> eyre::Result<Self, Self::Error> {
         if value.len() < HEADER_LENGTH {
             return Err(eyre!("Invalid PNG format"));
         }
@@ -112,7 +113,7 @@ mod tests {
         Png::from_chunks(chunks)
     }
 
-    fn chunk_from_strings(chunk_type: &str, data: &str) -> Result<Chunk> {
+    fn chunk_from_strings(chunk_type: &str, data: &str) -> eyre::Result<Chunk> {
         use std::str::FromStr;
 
         let chunk_type = ChunkType::from_str(chunk_type)?;

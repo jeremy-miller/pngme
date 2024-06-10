@@ -1,8 +1,7 @@
-use color_eyre::eyre::{self, eyre, Result};
-use std::{
-    fmt::{Display, Formatter},
-    str::FromStr,
-};
+use color_eyre::eyre;
+use color_eyre::eyre::eyre;
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 
 #[derive(Debug, Eq, PartialEq)]
 pub struct ChunkType {
@@ -38,7 +37,7 @@ impl ChunkType {
 impl TryFrom<[u8; 4]> for ChunkType {
     type Error = eyre::Report;
 
-    fn try_from(value: [u8; 4]) -> Result<Self, Self::Error> {
+    fn try_from(value: [u8; 4]) -> eyre::Result<Self, Self::Error> {
         Ok(ChunkType { bytes: value })
     }
 }
@@ -46,7 +45,7 @@ impl TryFrom<[u8; 4]> for ChunkType {
 impl FromStr for ChunkType {
     type Err = eyre::Report;
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    fn from_str(s: &str) -> eyre::Result<Self, Self::Err> {
         let bytes = s.as_bytes();
         if bytes.len() != 4 {
             return Err(eyre!("Invalid chunk length"));

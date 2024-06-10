@@ -11,54 +11,54 @@ pub struct App {
 
 #[derive(Subcommand, Debug)]
 pub enum Commands {
-    /// Encode a message into a PNG file
+    /// Encodes a message into a PNG file and saves the result
     Encode(EncodeArgs),
 
-    /// Decode a message from a PNG file
+    /// Searches for a message hidden in a PNG file and prints the message if one is found
     Decode(DecodeArgs),
 
-    /// Remove a message from a PNG file
+    /// Removes a chunk from a PNG file
     Remove(RemoveArgs),
 
-    /// Print all messages in a PNG file
+    /// Prints all of the chunks in a PNG file
     Print(PrintArgs),
 }
 
 #[derive(Args, Debug)]
 pub struct EncodeArgs {
     /// Path to input PNG file
-    file_path: PathBuf,
+    pub file_path: PathBuf,
 
     /// Chunk type of message
-    chunk_type: String,
+    pub chunk_type: String,
 
     /// Message to encode
-    message: String,
+    pub message: String,
 
     /// Optional path to output PNG file
-    output_file_path: Option<PathBuf>,
+    pub output_file_path: Option<PathBuf>,
 }
 
 #[derive(Args, Debug)]
 pub struct DecodeArgs {
     /// Path to input PNG file
-    file_path: PathBuf,
+    pub file_path: PathBuf,
 
     /// Chunk type of message
-    chunk_type: String,
+    pub chunk_type: String,
 }
 
 #[derive(Args, Debug)]
 pub struct RemoveArgs {
     /// Path to input PNG file
-    file_path: PathBuf,
+    pub file_path: PathBuf,
 
     /// Chunk type of message
-    chunk_type: String,
+    pub chunk_type: String,
 }
 
 #[derive(Args, Debug)]
 pub struct PrintArgs {
     /// Path to input PNG file
-    file_path: PathBuf,
+    pub file_path: PathBuf,
 }

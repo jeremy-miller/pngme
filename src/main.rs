@@ -5,27 +5,34 @@ mod commands;
 mod png;
 
 use crate::args::{App, Commands};
+use crate::commands::{decode, encode, print_chunks, remove};
 use clap::Parser;
 use color_eyre::eyre::Result;
-use tracing_subscriber::FmtSubscriber;
+use tracing_error::ErrorLayer;
+use tracing_subscriber::fmt;
+use tracing_subscriber::prelude::*;
 
 fn main() -> Result<()> {
+    dotenvy::dotenv()?;
     color_eyre::install()?;
-    let _subscriber = FmtSubscriber::builder().finish();
+    tracing_subscriber::registry()
+        .with(fmt::layer())
+        .with(ErrorLayer::default())
+        .init();
 
     let app = App::parse();
     match app.command {
         Commands::Encode(args) => {
-            println!("Encoding with args: {:?}", args);
+            encode(args)?;
         }
         Commands::Decode(args) => {
-            println!("Decoding with args: {:?}", args);
+            decode(args)?;
         }
         Commands::Remove(args) => {
-            println!("Removing with args: {:?}", args);
+            remove(args)?;
         }
         Commands::Print(args) => {
-            println!("Printing with args: {:?}", args);
+            print_chunks(args)?;
         }
     }
 

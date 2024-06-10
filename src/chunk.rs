@@ -1,5 +1,6 @@
 use crate::chunk_type::ChunkType;
-use color_eyre::eyre::{self, eyre, Result};
+use color_eyre::eyre;
+use color_eyre::eyre::eyre;
 use std::fmt::{Display, Formatter};
 
 pub const CHUNK_LENGTH_SIZE: usize = 4;
@@ -42,7 +43,7 @@ impl Chunk {
         self.crc
     }
 
-    pub fn data_as_string(&self) -> Result<String> {
+    pub fn data_as_string(&self) -> eyre::Result<String> {
         String::from_utf8(self.data.clone()).map_err(|_| eyre!("Invalid UTF-8 bytes"))
     }
 
@@ -61,7 +62,7 @@ impl Chunk {
 impl TryFrom<&[u8]> for Chunk {
     type Error = eyre::Report;
 
-    fn try_from(value: &[u8]) -> Result<Self, Self::Error> {
+    fn try_from(value: &[u8]) -> eyre::Result<Self, Self::Error> {
         if value.len() < CHUNK_LENGTH_SIZE + CHUNK_TYPE_SIZE + CHUNK_CRC_SIZE {
             return Err(eyre!("Invalid chunk format"));
         }
